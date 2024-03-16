@@ -3,13 +3,19 @@ import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from "axios";
 
+import {useDispatch} from 'react-redux';
+import { showLoading, hideLoading } from '../redux/features/alertSlice';
+
 const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
     //form handler
     const onfinishHandler = async (values) => {
       try {
+        dispatch(showLoading());
         const res = await axios.post('/api/v1/user/login', values);
+        dispatch(hideLoading());
         if(res.data.success) {
           localStorage.setItem('token', res.data.token)
           message.success('Login Successfully')
@@ -18,6 +24,7 @@ const Login = () => {
           message.error(res.data.message)
         }
       } catch (error) {
+        dispatch(hideLoading());
         console.log(error)
         message.error('Something Went Error')
       }
