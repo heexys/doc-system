@@ -36,16 +36,24 @@ const Layout = ({ children }) => {
                         return (
                             <>
                                 <div className={`menu-item ${isActive && "active"}`}>
-                                    <i className={menu.icon}></i>
-                                    <Link to={menu.path}>{menu.name}</Link>
+                                    <Link to={menu.path}>
+                                        <div>
+                                            <i className={menu.icon}></i>
+                                            {menu.name}
+                                        </div>
+                                    </Link>
                                 </div>
                             </>
                         )
                     })}
                     <div className={`menu-item`} onClick={handleLogout}>
-                                    <i className='fa-solid fa-right-from-bracket'></i>
-                                    <Link to="/login">Logout</Link>
-                                </div>
+                        <Link to="/login">
+                            <div>
+                                <i className='fa-solid fa-right-from-bracket'></i>
+                                Logout
+                            </div>
+                        </Link>
+                    </div>
                 </div>
             </div>
             <div className="content">

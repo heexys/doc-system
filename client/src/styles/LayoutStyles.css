@@ -43,17 +43,27 @@
 }
 
 .menu {
-    margin-top: 50px;
+    margin-top: 40px;
 }
 
 .menu-item {
-    margin-top: 30px;
+    /* margin-top: 0.5px; */
+    height: 50px;
 }
 
 .menu-item a {
+    position: relative;
     color: white;
     text-decoration: none;
     font-size: 1.2rem;
+    height: 100%;
+    width: 100%;
+    display: inline-block;
+}
+
+.menu-item div {
+    position: absolute;
+    top: 10.6px;
 }
 
 .menu-item i {
@@ -63,7 +73,7 @@
 
 .active {
     background-color: white;
-    padding: 10px;
+    height: 50px;
 }
 
 .active a,
