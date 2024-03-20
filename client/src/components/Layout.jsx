@@ -31,11 +31,10 @@ const Layout = ({ children }) => {
                     <hr />
                 </div>
                 <div className="menu">
-                    {SidebarMenu.map(menu => {
+                    {SidebarMenu.map((menu, index) => {
                         const isActive = location.pathname === menu.path
                         return (
-                            <>
-                                <div className={`menu-item ${isActive && "active"}`}>
+                                <div className={`menu-item ${isActive && "active"}`} key={index}>
                                     <Link to={menu.path}>
                                         <div>
                                             <i className={menu.icon}></i>
@@ -43,7 +42,6 @@ const Layout = ({ children }) => {
                                         </div>
                                     </Link>
                                 </div>
-                            </>
                         )
                     })}
                     <div className={`menu-item`} onClick={handleLogout}>
@@ -59,7 +57,7 @@ const Layout = ({ children }) => {
             <div className="content">
                 <div className="header">
                     <div className="header-content">
-                        <i class="fa-solid fa-bell"></i>
+                        <i className="fa-solid fa-bell"></i>
                         <Link to='/profile'>{user?.name}</Link>
                     </div>
                 </div>
