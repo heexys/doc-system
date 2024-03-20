@@ -5,7 +5,7 @@ import { adminMenu, userMenu } from '../Data/data';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-import {message} from 'antd'
+import {Badge, message} from 'antd'
 
 const Layout = ({ children }) => {
     const location = useLocation()
@@ -57,7 +57,9 @@ const Layout = ({ children }) => {
             <div className="content">
                 <div className="header">
                     <div className="header-content">
-                        <i className="fa-solid fa-bell"></i>
+                        <Badge count={user && user.notifcation.length}>
+                            <i className="fa-solid fa-bell"></i>
+                        </Badge>
                         <Link to='/profile'>{user?.name}</Link>
                     </div>
                 </div>
