@@ -101,3 +101,7 @@
     margin: 0 10px;
     text-transform: uppercase;
 }
+
+.header-content span {
+    cursor:pointer
+}

@@ -80,18 +80,25 @@ const applyDoctorController = async (req,res) => {
     try {
         const newDoctor = await doctorModel({...req.body, status:'pending'})
         await newDoctor.save()
-        const adminUser = await userModel.findOne({isAdmin:true})
-        const notifcation = adminUser.notifcation
-        notifcation.push({
-            type: "apply-doctor-request",
-            message: `${newDoctor.firstName} ${newDoctor.lastName} Has Applied For A Doctor Account.`,
-            data:{
-                doctorId:newDoctor._id,
-                name: newDoctor.firstName + ' ' + newDoctor.lastName,
-                onclickPath:' /admin/doctors' 
-            }
+
+        // Найти всех пользователей с админкой
+        const adminUsers = await userModel.find({isAdmin:true})
+
+        // Отправить уведомление каждому администратору
+        adminUsers.forEach(async (adminUser) => {
+            const notifcation = adminUser.notifcation || []
+            notifcation.push({
+                type: "apply-doctor-request",
+                message: `${newDoctor.firstName} ${newDoctor.lastName} Has Applied For A Doctor Account.`,
+                data:{
+                    doctorId:newDoctor._id,
+                    name: newDoctor.firstName + ' ' + newDoctor.lastName,
+                    onclickPath:' /admin/doctors' 
+                }
+            })
+            await userModel.findByIdAndUpdate(adminUser._id, {notifcation})
         })
-        await userModel.findByIdAndUpdate(adminUser._id, {notifcation})
+
         res.status(201).send({
             success:true,
             message:'Doctor Account Applied Successfully'
@@ -101,7 +108,56 @@ const applyDoctorController = async (req,res) => {
         res.status(500).send({
             success:false,
             error,
-            message:'Error WHile Applying For Doctor'
+            message:'Error While Applying For Doctor'
+        })
+    }
+}
+
+
+//notification ctrl
+const getAllNotificationController = async (req,res) => {
+    try {
+        const user = await userModel.findOne({_id:req.body.userId})
+        const seennotification = user.seennotification
+        const notifcation = user.notifcation
+        seennotification.push(...notifcation)
+        user.notifcation = []
+        user.seennotification = notifcation
+        const updatedUser = await user.save()
+        res.status(200).send({
+            success:true,
+            message:'all notification marked as read',
+            data:updatedUser,
+        })
+    } catch (error) {
+        console.log(error)
+        res.status(500).send({
+            message: 'Error in notification',
+            success: false,
+            error,
+        })
+    }
+}
+
+// delete notifications
+const deleteAllNotificationController = async(req,res) => {
+    try {
+        const user = await userModel.findOne({_id:req.body.userId})
+        user.notifcation = []
+        user.seennotification = []
+        const updatedUser = await user.save()
+        updatedUser.password = undefined
+        res.status(200).send({
+            success:true,
+            message:'Notifications Deleted Successfully',
+            data: updatedUser,
+        })
+    } catch (error) {
+        console.log(error)
+        res.status(500).send({
+            success:false,
+            message:'unable to delete all notification',
+            error
         })
     }
 }
@@ -111,4 +167,6 @@ module.exports = {
     registerController,
     authController,
     applyDoctorController,
+    getAllNotificationController,
+    deleteAllNotificationController,
 };
