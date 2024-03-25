@@ -1,5 +1,9 @@
 const express = require('express');
-const { getAllUsersController, getAllDoctorsController } = require('../controllers/adminCtrl');
+const {
+    getAllUsersController,
+    getAllDoctorsController,
+    changeAccountStatusController,
+} = require('../controllers/adminCtrl');
 const authMiddleware = require("../middlewares/authMiddleware");
 
 const router = express.Router()
@@ -9,5 +13,8 @@ router.get('/getAllUsers', authMiddleware, getAllUsersController)
 
 //GET METHOD || DOCTORS
 router.get('/getAllDoctors', authMiddleware, getAllDoctorsController)
+
+//POST ACCOUNT STATUS
+router.post('/changeAccountStatus', authMiddleware, changeAccountStatusController)
 
 module.exports = router

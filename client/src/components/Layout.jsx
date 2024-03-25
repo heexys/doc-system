@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import '../styles/LayoutStyles.css';
 import { adminMenu, userMenu } from '../Data/data';
@@ -11,6 +11,12 @@ const Layout = ({ children }) => {
     const location = useLocation()
     const {user} = useSelector(state => state.user)
     const navigate = useNavigate()
+
+    useEffect(() => {
+        if (!location.pathname.includes('/notification')) {
+            localStorage.setItem('activeTab', '0')
+        }
+      }, [location.pathname]);
 
     // logout func
     const handleLogout = () => {

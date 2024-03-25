@@ -122,7 +122,6 @@ const getAllNotificationController = async (req,res) => {
         const notifcation = user.notifcation
         seennotification.push(...notifcation)
         user.notifcation = []
-        user.seennotification = notifcation
         const updatedUser = await user.save()
         res.status(200).send({
             success:true,
