@@ -47,9 +47,9 @@ const changeAccountStatusController = async (req,res) => {
         notification.push({
             type:'doctor-account-request-updated',
             message:`Your Doctor Request Has ${status}`,
-            onclickPath:'/notification'
+            onClickPath:'/notification'
         })
-        user.isDoctor === 'approved' ? true : false
+        user.isDoctor = status === 'approved' ? true : false
         await user.save()
         res.status(201).send({
             success: true,

@@ -1,4 +1,4 @@
-import { Tabs, message } from 'antd';
+import { Tabs, message, notification } from 'antd';
 import Layout from '../components/Layout';
 
 import { useNavigate } from 'react-router-dom';

@@ -90,10 +90,10 @@ const applyDoctorController = async (req,res) => {
             notifcation.push({
                 type: "apply-doctor-request",
                 message: `${newDoctor.firstName} ${newDoctor.lastName} Has Applied For A Doctor Account.`,
+                onClickPath:'/admin/doctors',
                 data:{
                     doctorId:newDoctor._id,
                     name: newDoctor.firstName + ' ' + newDoctor.lastName,
-                    onclickPath:' /admin/doctors' 
                 }
             })
             await userModel.findByIdAndUpdate(adminUser._id, {notifcation})

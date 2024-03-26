@@ -38,7 +38,9 @@ const getDoctors = async () => {
       })
       if(res.data.success){
         message.success(res.data.message)
-        window.location.reload()
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
       }
     } catch (error) {
       message.error('Something Went Wrong')
