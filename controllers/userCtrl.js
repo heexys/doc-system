@@ -194,7 +194,7 @@ const bookeAppointmentController = async (req,res) => {
         user.notifcation.push({
             type: 'New-appointment-request',
             message:`A New Appointment Request From ${req.body.userInfo.name}`,
-            onClickPath:'/user/appointments'
+            onClickPath:'/doctor-appointments'
         })
         await user.save()
         res.status(200).send({
@@ -247,6 +247,25 @@ const bookingAvailabilityController = async (req,res) => {
     }
 }
 
+const userAppointmentsController = async (req, res) => {
+    console.log('happy house')
+    try {
+        const appointments = await appointmentModel.find({userId:req.body.userId})
+        res.status(200).send({
+            success:true,
+            message:'User Appointments Fetch Successfully',
+            data:appointments
+        })
+    } catch (error) {
+        console.log(error)
+        res.status(500).send({
+            success:false,
+            error,
+            message: 'Error In User Appointments'
+        })
+    }
+}
+
 module.exports = {
     loginController,
     registerController,
@@ -257,4 +276,5 @@ module.exports = {
     getAllDoctorsController,
     bookeAppointmentController,
     bookingAvailabilityController,
+    userAppointmentsController,
 };
