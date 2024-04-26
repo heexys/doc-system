@@ -2,7 +2,7 @@ import React, {useEffect,useState} from 'react';
 import Layout from '../../components/Layout';
 
 import axios from 'axios';
-import { Table } from 'antd';
+import { Table, message } from 'antd';
 
 const Users = () => {
   const [users, setUsers] = useState([])
@@ -27,6 +27,28 @@ const getUsers = async () => {
     getUsers();
   }, []);
 
+  //handle admin account
+  const handleAdmin = async (record) => {
+    console.log(record)
+    try {
+      const res = await axios.post('/api/v1/admin/changeAdminStatus',
+    {id: record},
+    {
+      headers:{
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    })
+    if(res.data.success) {
+      message.success(res.data.message)
+      setTimeout(() => {
+        window.location.reload()
+      }, 500)
+    } 
+    } catch (error) {
+      message.error('Something Went Wrong')
+    }
+  } 
+
   // antD table col
   const columns = [
     {
@@ -43,8 +65,8 @@ const getUsers = async () => {
       render: (text,record) => (
         <span>
           {record.isAdmin ?
-            <button className='btn btn-success'>Admin</button> :
-            <button className='btn btn-primary'>setAdmin</button>
+            <button className='btn btn-success' onClick={() => {handleAdmin(record._id)}}>Admin</button> :
+            <button className='btn btn-primary' onClick={() => {handleAdmin(record._id)}}>setAdmin</button>
           }
         </span>
       )
@@ -61,7 +83,7 @@ const getUsers = async () => {
       dataIndex:'actions',
       render: (text,record) => (
         <div className='d-flex'>
-          <button className='btn btn-danger'>Block</button>
+          <button className='btn btn-danger' onClick={() => {message.error('func not done')}}>Block</button>
         </div>
       )
     }

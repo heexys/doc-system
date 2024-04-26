@@ -66,8 +66,31 @@ const changeAccountStatusController = async (req,res) => {
     }
 }
 
+//change user admin status
+const changeAdminStatusController = async (req, res) => {
+    try {
+        const {id} = req.body
+        const user = await userModel.findById(id)
+        user.isAdmin = !user.isAdmin;
+        await user.save()
+        res.status(201).send({
+            success: true,
+            message:'Account Admin Status Updated',
+            data: user,
+        })
+    } catch (error) {
+        console.log(error)
+        res.status(500).send({
+            success:false,
+            message:'Error in Change Account Admin Status',
+            error
+        })
+    }
+}
+
 module.exports = {
     getAllUsersController, 
     getAllDoctorsController,
     changeAccountStatusController,
+    changeAdminStatusController,
 }
