@@ -69,13 +69,27 @@ const changeAccountStatusController = async (req,res) => {
 //change user admin status
 const changeAdminStatusController = async (req, res) => {
     try {
-        const {id} = req.body
+        const {id, userId} = req.body
         const user = await userModel.findById(id)
-        user.isAdmin = !user.isAdmin;
+        if (userId === id || user.isDoctor === true) {
+            if (userId === id) {
+                return res.status(400).send({
+                    success: false,
+                    message: "You can't change your admin status",
+                });
+            } else {
+                return res.status(400).send({
+                    success: false,
+                    message: "This user can't be admin because user has the role doctor",
+                });
+            }
+        } else{
+        user.isAdmin = !user.isAdmin;}
         await user.save()
         res.status(201).send({
             success: true,
             message:'Account Admin Status Updated',
+            messages:[{id}, {userId}, {user}],
             data: user,
         })
     } catch (error) {

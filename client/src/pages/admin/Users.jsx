@@ -29,7 +29,6 @@ const getUsers = async () => {
 
   //handle admin account
   const handleAdmin = async (record) => {
-    console.log(record)
     try {
       const res = await axios.post('/api/v1/admin/changeAdminStatus',
     {id: record},
@@ -45,7 +44,11 @@ const getUsers = async () => {
       }, 500)
     } 
     } catch (error) {
-      message.error('Something Went Wrong')
+      if (error.response.data.message) {
+        message.error(error.response.data.message, 4.7);
+    } else {
+        message.error('Something Went Wrong');
+    }
     }
   } 
 
